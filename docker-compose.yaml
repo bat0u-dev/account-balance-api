@@ -4,6 +4,6 @@ services:
   account-api:
     build: .
     ports:
-      - "8080:8080"
+      - "8087:8087"
     environment:
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: dev
