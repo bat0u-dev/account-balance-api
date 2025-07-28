@@ -43,7 +43,8 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     @Transactional
-    public TransactionResponse addTransaction(String name, CreateTransactionRequest req) {
+    public TransactionResponse addTransaction(String balanceName, CreateTransactionRequest req) {
+
         // Idempotency check
         if (transactionRepo.existsByExternalId(req.externalId())) {
             return transactionRepo.findByExternalId(req.externalId())
@@ -51,7 +52,7 @@ public class BalanceServiceImpl implements BalanceService {
                 .orElseThrow();
         }
 
-        Balance balance = balanceRepo.findByName(name).orElseThrow();
+        Balance balance = balanceRepo.findByName(balanceName).orElseThrow();
 
         Transaction tx = new Transaction();
         tx.setType(req.type());
@@ -62,7 +63,7 @@ public class BalanceServiceImpl implements BalanceService {
         tx.setExternalId(req.externalId());
 
         if (req.type() == TransactionType.WITHDRAW) {
-            BigDecimal current = getBalance(name).total();
+            BigDecimal current = getBalance(balanceName).total();
             BigDecimal withdrawUsd = convertToUsd(req.amount(), req.currency());
             if (withdrawUsd.compareTo(current) > 0) throw new RuntimeException("Insufficient funds");
         }
@@ -72,8 +73,8 @@ public class BalanceServiceImpl implements BalanceService {
     }
 
     @Override
-    public List<TransactionResponse> listTransactions(String name) {
-        Balance balance = balanceRepo.findByName(name).orElseThrow();
+    public List<TransactionResponse> listTransactions(String balanceName) {
+        Balance balance = balanceRepo.findByName(balanceName).orElseThrow();
         return balance.getTransactions().stream()
             .map(tx -> new TransactionResponse(tx.getType(), tx.getAmount(), tx.getCurrency(), tx.getTimestamp()))
             .toList();
