@@ -1,0 +1,79 @@
+{
+  "info": {
+    "name": "Account Balance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Balance",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/balances",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "balances"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"my-wallet\"}"
+        }
+      }
+    },
+    {
+      "name": "Get Balance",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/balances/my-wallet",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "balances",
+            "my-wallet"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add Transaction",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/balances/my-wallet/transactions",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "balances",
+            "my-wallet",
+            "transactions"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"type\": \"DEPOSIT\", \"amount\": 100.0, \"currency\": \"USD\" }"
+        }
+      }
+    }
+  ]
+}
